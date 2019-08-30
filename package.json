@@ -1,0 +1,25 @@
+{
+  "name": "writalil",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "https://github.com/adaezeodurukwe/WritAlil.git",
+  "author": "Adaeze Odurukwe <daizyodurukwe@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./dist/app.js",
+    "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
+    "start:dev": "nodemon --exec babel-node ./server/app.js"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1"
+  }
+}
