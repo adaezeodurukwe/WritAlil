@@ -28,7 +28,11 @@
     "express": "^4.17.1",
     "husky": "^3.0.4",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.18.0",
+    "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
     "eslint": "^6.2.2",
