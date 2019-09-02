@@ -8,18 +8,31 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
-    "start:dev": "nodemon --exec babel-node ./server/app.js"
+    "start:dev": "nodemon --exec babel-node ./server/app.js",
+    "lint": "eslint ./server --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "dependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "babel-eslint": "^10.0.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "husky": "^3.0.4",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }

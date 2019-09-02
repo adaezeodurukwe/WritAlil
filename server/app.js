@@ -1,8 +1,8 @@
-import express from "express";
-import bodyParser from "body-parser";
-import logger from "morgan";
-import cors from "cors";
-import dotenv from "dotenv";
+import express from 'express';
+import bodyParser from 'body-parser';
+import logger from 'morgan';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ app.use(cors());
 // Enable logger
 app.use(logger('combined'));
 
-// Parse POST data 
+// Parse POST data
 app.use(bodyParser.json());
 
 // Set up index route
