@@ -27,6 +27,6 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT;
 
-app.listen(port);
+if (process.env.NODE_ENV !== 'test') app.listen(port);
 
 export default app;
