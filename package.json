@@ -9,7 +9,8 @@
     "start": "node ./dist/app.js",
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
     "start:dev": "nodemon --exec babel-node ./server/app.js",
-    "lint": "eslint ./server --fix"
+    "lint": "eslint ./server --fix",
+    "test": "jest --coverage --no-cache --detectOpenHandles --forceExit"
   },
   "husky": {
     "hooks": {
@@ -31,12 +32,14 @@
     "nodemon": "^1.19.1",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.18.0",
-    "sequelize-cli": "^5.5.1"
+    "sequelize": "^5.18.1",
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^6.2.2",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0"
   }
 }
