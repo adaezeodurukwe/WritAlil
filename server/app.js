@@ -1,8 +1,10 @@
+import '@babel/polyfill/noConflict';
 import express from 'express';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import routes from './routes';
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.get('/', (req, res) => {
     message: 'Wanna write a little?'
   });
 });
+
+app.use('/api/v1', routes);
 
 const port = process.env.PORT;
 

@@ -10,7 +10,11 @@
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
     "start:dev": "nodemon --exec babel-node ./server/app.js",
     "lint": "eslint ./server --fix",
-    "test": "jest --coverage --no-cache --detectOpenHandles --forceExit"
+    "pretest": "yarn db:refresh ",
+    "test": "jest --coverage --detectOpenHandles --forceExit",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
+    "db:refresh": "yarn db:reset && yarn db:migrate"
   },
   "husky": {
     "hooks": {
@@ -21,17 +25,20 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
+    "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.5.5",
     "babel-eslint": "^10.0.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "express-validator": "^6.2.0",
     "husky": "^3.0.4",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
+    "redis": "^2.8.0",
     "sequelize": "^5.18.1",
     "sequelize-cli": "^5.5.1",
     "supertest": "^4.0.2"

@@ -11,13 +11,28 @@ module.exports = {
       type: Sequelize.INTEGER
     },
     firstName: {
+      allowNull: false,
       type: Sequelize.STRING
     },
     lastName: {
+      allowNull: false,
       type: Sequelize.STRING
     },
     email: {
+      allowNull: false,
       type: Sequelize.STRING
+    },
+    userName: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
+    password: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
+    verified: {
+      defaultValue: false,
+      type: Sequelize.BOOLEAN
     },
     createdAt: {
       allowNull: false,
@@ -26,7 +41,7 @@ module.exports = {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE
-    }
+    },
   }),
   down: (queryInterface) => queryInterface.dropTable('Users')
 };

@@ -1,14 +1,11 @@
 module.exports = {
+  collectCoverage: true,
   coverageDirectory: 'coverage',
-  testPathIgnorePatterns: ['/node_modules/', '/tests/', '/src/__tests__/assetsTransformer.js'],
-  transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/assets/img'],
+  testPathIgnorePatterns: ['/node_modules/'],
   collectCoverageFrom: [
-    '**/*.{js}',
+    'server/**/*.js',
+    '!**/__tests__/**/*.js?(x)',
     '!**/node_modules/**',
-    '!**/coverage/**',
-    '!**/tests/**',
-    '!**/__tests__/**',
-    '!**/index.js'
   ],
   coverageThreshold: {
     global: {
@@ -17,5 +14,11 @@ module.exports = {
       lines: 80,
       statements: 80
     }
-  }
+  },
+  coveragePathIgnorePatterns: [
+    '<rootDir>/server/database/migrations',
+    '<rootDir>/server/database/seeders',
+    '<rootDir>/server/database/models/index.js',
+  ],
+  testEnvironment: 'node',
 };
