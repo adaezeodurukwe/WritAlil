@@ -2,22 +2,21 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-defaults: &defaults
-  docker:
-    - image: circleci/node:carbon
-      environment:
-        NODE_ENV: test
-        DATABASE_URL: postgres://root@localhost/tembea_test_db
-    - image: postgres:9.6
-      environment:
-        POSTGRES_USER: root
-        POSTGRES_DB: tembea_test_db
-  working_directory: ~/writalil-backend
-
 version: 2
 jobs:
   build:
-    <<: *defaults
+    environment:
+      CC_TEST_REPORTER_ID: e268a5f42e6fa4c179e96fd0a62cd8ec462f441f1b5680f24c0b153136870518
+    docker:
+      - image: circleci/node:carbon
+        environment:
+          NODE_ENV: test
+          DATABASE_URL: postgres://root@localhost/writalil_test_db
+      - image: postgres:9.6
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: writalil_test_db
+    working_directory: ~/writalil-backend
     steps:
       - checkout
       - restore_cache:
@@ -32,9 +31,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-  test_and_report:
-    <<: *defaults
-    steps:
       - run:
           name: Install code climate test reporter
           command: |
