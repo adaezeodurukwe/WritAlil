@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
+    "heroku-postbuild": "yarn build",
     "start:dev": "nodemon --exec babel-node ./server/app.js",
     "lint": "eslint ./server --fix",
     "pretest": "yarn db:refresh ",
