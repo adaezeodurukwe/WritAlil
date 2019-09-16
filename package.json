@@ -5,6 +5,9 @@
   "repository": "https://github.com/adaezeodurukwe/WritAlil.git",
   "author": "Adaeze Odurukwe <daizyodurukwe@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "12.4.0"
+  },
   "scripts": {
     "start": "node ./dist/app.js",
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
