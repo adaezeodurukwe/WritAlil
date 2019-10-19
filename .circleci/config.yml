@@ -8,7 +8,7 @@ jobs:
     environment:
       CC_TEST_REPORTER_ID: e268a5f42e6fa4c179e96fd0a62cd8ec462f441f1b5680f24c0b153136870518
     docker:
-      - image: circleci/node:carbon
+      - image: circleci/node:12.0.0
         environment:
           NODE_ENV: test
           DATABASE_URL: postgres://root@localhost/writalil_test_db
