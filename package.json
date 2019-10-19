@@ -17,6 +17,7 @@
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
     "db:refresh": "yarn db:reset && yarn db:migrate"
   },
+  "heroku-run-build-script": true,
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
