@@ -5,6 +5,10 @@
   "repository": "https://github.com/adaezeodurukwe/WritAlil.git",
   "author": "Adaeze Odurukwe <daizyodurukwe@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0",
+    "yarn": ">=1.0.0"
+    },
   "scripts": {
     "start": "node ./dist/app.js",
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
@@ -17,7 +21,6 @@
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
     "db:refresh": "yarn db:reset && yarn db:migrate"
   },
-  "heroku-run-build-script": true,
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
