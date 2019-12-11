@@ -39,7 +39,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   User.associate = (models) => {
+    const { VerificationToken } = models;
     // associations can be defined here
+    User.hasOne(VerificationToken, {
+      as: 'verificationtoken',
+      foreignKey: 'userId',
+      foreignKeyConstraint: true
+    });
   };
   return User;
 };
