@@ -80,7 +80,7 @@ alt="WL_logo" />
 You signed up for our little writing community and we would like to confirm your email.
 </p>
 <p class="message">Please, click the button below to proceed.</p>
-<a class="verifyLink" href="${host}/verification?token=${token}" target="_blank">
+<a class="verifyLink" href="${host}/api/v1/user/verification?token=${token}" target="_blank">
 Verify
 </a>
 </div>

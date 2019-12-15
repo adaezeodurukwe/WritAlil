@@ -23,6 +23,16 @@ export default class Helpers {
     return jwt.sign(payload, secretKey);
   }
 
+  /**
+   * @method verifyToken
+   * @description Verify a token from a given payload
+   * @param {object} payload The user payload to tokenize
+   * @returns {string} JSON Web Token
+   */
+  static verifyToken(payload) {
+    return jwt.verify(payload, secretKey);
+  }
+
 
   /**
    * @method hashPassword
