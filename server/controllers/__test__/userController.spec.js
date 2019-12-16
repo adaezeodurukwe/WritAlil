@@ -8,6 +8,8 @@ import { verificationService } from '../../services/verifyService';
 const wrongToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb2xlZWVmQGdtYWlsLmNvbSIsInRva2VuIjoiWUc2RUVLNnRwdktNWTYiLCJpYXQiOjE1NzY0MzAyMjh9.UQi7pR-6cIggaM_5725QU3u9f6O5O3B1VPp8pEYhkgc';
 
 describe('userController', () => {
+  const mailSpy = jest.spyOn(Helpers, 'sendMail');
+  mailSpy.mockResolvedValue();
   it('should create a new user', (done) => {
     request(app)
       .post('/api/v1/user')
@@ -59,7 +61,7 @@ describe('userController', () => {
       .send({
         firstName: 'boombie',
         lastName: 'mooleed',
-        email: 'moolefood@gmail.com',
+        email: 'mooleefood@gmail.com',
         password: 'moody',
         userName: 'fmoole'
       })
