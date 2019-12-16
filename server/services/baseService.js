@@ -24,10 +24,25 @@ export default class BaseService {
   /**
    * @method find
    * @param {object} whereObject
+   * @param {array} includeArray
    * @returns {object} found object
    */
-  async find(whereObject) {
-    const found = this.model.findOne({ where: whereObject });
+  async find(whereObject, includeArray) {
+    const found = this.model.findOne({
+      where: whereObject,
+      include: includeArray
+    });
     return found;
+  }
+
+  /**
+   * @method update
+   * @param {*} updateObject
+   * @param {*} whereObject
+   * @returns {object} updated row
+   */
+  async updateRecord(updateObject, whereObject) {
+    const updated = await this.model.update(updateObject, { returning: true, where: whereObject });
+    return updated;
   }
 }
