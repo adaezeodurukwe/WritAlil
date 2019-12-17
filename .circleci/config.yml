@@ -24,7 +24,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
 
-      - run: yarn install
+      - run: npm install
 
       - save_cache:
           paths:
@@ -44,6 +44,6 @@ jobs:
           name: Run tests
           command: |
             ./cc-test-reporter before-build     # https://github.com/codeclimate/test-reporter/issues/260#issuecomment-369783913
-            yarn test --coverage
+            npm test --coverage
             ./cc-test-reporter after-build --exit-code $?
     
