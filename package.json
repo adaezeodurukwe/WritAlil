@@ -7,23 +7,23 @@
   "license": "MIT",
   "engines": {
     "node": ">=12.0.0",
-    "yarn": ">=1.0.0"
-    },
+    "npm": "6.12.0"
+  },
   "scripts": {
     "start": "node ./dist/app.js",
     "build": "rm -rf dist && mkdir dist && babel ./server --out-dir ./dist  --source-maps",
-    "heroku-postbuild": "YARN_PRODUCTION=false yarn build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build",
     "start:dev": "nodemon --exec babel-node ./server/app.js",
     "lint": "eslint ./server --fix",
-    "pretest": "yarn db:refresh ",
+    "pretest": "npm run db:refresh ",
     "test": "jest --coverage --detectOpenHandles --forceExit",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "db:refresh": "yarn db:reset && yarn db:migrate"
+    "db:refresh": "npm run db:reset && npm run db:migrate"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "npm lint"
     }
   },
   "dependencies": {
@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.5.5",
     "@sendgrid/mail": "^6.4.0",
     "babel-eslint": "^10.0.3",
-    "bcrypt": "^3.0.7",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.0.1",
