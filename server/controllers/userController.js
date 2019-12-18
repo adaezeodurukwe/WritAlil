@@ -34,6 +34,7 @@ export default class UserController {
 
       const user = await userService.create(body);
       delete user.dataValues.password;
+
       const { id, email, userName } = user;
       const verificationToken = cryptoRandomString({ length: 15, type: 'base64' });
       const { token } = await verificationService.create({ userId: id, token: verificationToken });
@@ -97,5 +98,39 @@ export default class UserController {
     }
   }
 
-  // User Login function
+  /**
+   * @method loginUser
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} login details
+   */
+  static async loginUser(req, res) {
+    try {
+      const { user } = req;
+      const { id } = user;
+      const { email, password } = req.body;
+      const correctCredentials = Helpers.comparePassword(password, user.password);
+
+      if (!correctCredentials) {
+        return res.status(403).send({
+          status: 403,
+          message: 'forbidden',
+        });
+      }
+      user.datavalues.token = Helpers.generateToken({ id, email });
+      delete user.datavalues.password;
+
+      return res.status(200).send({
+        status: 200,
+        message: 'login successfull',
+        user
+      });
+    } catch (error) {
+      return res.status(500).send({
+        status: 500,
+        message: 'something went wrong',
+        error
+      });
+    }
+  }
 }

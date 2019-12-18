@@ -1,6 +1,11 @@
 import { body, validationResult } from 'express-validator';
 import { userService } from '../services/userService';
 
+const validateEmailPassword = [
+  body('email', 'Email is missing').exists().isEmail().withMessage('Invalid email'),
+  body('password', 'Password is missing').exists().isLength({ min: 2 }).withMessage('Password must contain more than 4 characters')
+];
+
 const createUser = [
   body('firstName', 'Firstname is missing').exists()
     .isAlpha()
@@ -20,8 +25,7 @@ const createUser = [
     .isLength({ min: 3 })
     .withMessage('Username should be greater than three letters'),
 
-  body('email', 'Email is missing').exists().isEmail().withMessage('Invalid email'),
-  body('password', 'Password is missing').exists().isLength({ min: 2 }).withMessage('Password must contain more than 4 characters')
+  ...validateEmailPassword
 ];
 
 /**
@@ -36,6 +40,28 @@ function customErrorObject(value, msg, param, location) {
   this.msg = msg;
   this.param = param;
   this.location = location;
+}
+
+const confirmEmail = async (req, res, next) => {
+  const { email } = req.body;
+  const user = await userService.find({ email });
+  if (!user) {
+    const error = new customErrorObject(email, 'User doesn\'t exist', 'email', 'body');
+    return res.status(400).json({
+      status: 400,
+      message: 'Bad Request',
+      errors: [error] });
+  }
+  if (!user.verified) {
+    const error = new customErrorObject(email, 'Please verify your email, it\'s really easy', 'email', 'body');
+    return res.status(401).json({
+      status: 401,
+      message: 'Unauthorized',
+      errors: [error] });
+  }
+
+  req.user = user;
+  return next();
 }
 
 const validateEmail = async (req, res, next) => {
@@ -78,7 +104,9 @@ const validationHandler = (req, res, next) => {
 
 export {
   createUser,
+  confirmEmail,
   validateEmail,
   validateUserName,
-  validationHandler
+  validationHandler,
+  validateEmailPassword
 };
