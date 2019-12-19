@@ -62,7 +62,7 @@ const confirmEmail = async (req, res, next) => {
 
   req.user = user;
   return next();
-}
+};
 
 const validateEmail = async (req, res, next) => {
   const { email } = req.body;

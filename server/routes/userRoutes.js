@@ -16,6 +16,6 @@ userRoutes.post('/user',
 userRoutes.get('/user/verification', UserController.verifyUser);
 
 // Login user
-userRoutes.post('/user/login', validator.validateEmailPassword, validator.confirmEmail, UserController.loginUser)
+userRoutes.post('/user/login', validator.validateEmailPassword, validator.confirmEmail, UserController.loginUser);
 
 export default userRoutes;

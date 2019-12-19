@@ -107,7 +107,7 @@ export default class UserController {
   static async loginUser(req, res) {
     try {
       const { user } = req;
-      const { id } = user;
+      const { id } = user.dataValues;
       const { email, password } = req.body;
       const correctCredentials = Helpers.comparePassword(password, user.password);
 
@@ -117,12 +117,14 @@ export default class UserController {
           message: 'forbidden',
         });
       }
-      user.datavalues.token = Helpers.generateToken({ id, email });
-      delete user.datavalues.password;
+
+      const token = Helpers.generateToken({ id, email });
+      delete user.dataValues.password;
 
       return res.status(200).send({
         status: 200,
         message: 'login successfull',
+        token,
         user
       });
     } catch (error) {
