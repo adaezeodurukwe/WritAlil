@@ -4,11 +4,13 @@ import app from '../../app';
 import { userService } from '../../services/userService';
 import Helpers from '../../utils/helpers';
 import { verificationService } from '../../services/verifyService';
+import sendGrid from '@sendgrid/mail';
+
 
 const wrongToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb2xlZWVmQGdtYWlsLmNvbSIsInRva2VuIjoiWUc2RUVLNnRwdktNWTYiLCJpYXQiOjE1NzY0MzAyMjh9.UQi7pR-6cIggaM_5725QU3u9f6O5O3B1VPp8pEYhkgc';
 
 describe('userController', () => {
-  const mailSpy = jest.spyOn(Helpers, 'sendMail');
+  const mailSpy = jest.spyOn(sendGrid, 'send');
   mailSpy.mockResolvedValue();
   it('should create a new user', (done) => {
     request(app)
@@ -112,4 +114,83 @@ describe('userController', () => {
         });
     });
   });
+});
+
+describe('User Login', () => {
+  let activeUser;
+  beforeAll(async() => {
+    const hashedPassword = Helpers.hashPassword('moody');
+    await userService.create({
+      firstName: 'bumni',
+      lastName: 'mooden',
+      email: 'moolefjonah@gmail.com',
+      password: hashedPassword,
+      userName: 'jonahB',
+      verified: true
+    });
+
+    await userService.create({
+      firstName: 'bumni',
+      lastName: 'mooden',
+      email: 'moolefjonahVictor@gmail.com',
+      password: hashedPassword,
+      userName: 'jonahVictor',
+    });
+  })
+
+  it('Should log a user in successfully', (done) => {
+    request(app)
+    .post('/api/v1/user/login')
+    .send({
+      email: 'moolefjonah@gmail.com',
+      password: 'moody',
+    })
+    .expect(200, (err, res) => {
+      expect(res.body.status).toEqual(200);
+      expect(res.body.message).toEqual('login successfull')
+      done();
+    });
+  })
+
+  it('Should not log a user in if password is wrong', (done) => {
+    request(app)
+    .post('/api/v1/user/login')
+    .send({
+      email: 'moolefjonah@gmail.com',
+      password: 'mood',
+    })
+    .expect(403, (err, res) => {
+      expect(res.body.status).toEqual(403);
+      expect(res.body.message).toEqual('forbidden')
+      done();
+    });
+  })
+
+  it('Should not log a user in if password is wrong', (done) => {
+    request(app)
+    .post('/api/v1/user/login')
+    .send({
+      email: 'moolefjonahVictor@gmail.com',
+      password: 'mood',
+    })
+    .expect(401, (err, res) => {
+      expect(res.body.status).toEqual(401);
+      expect(res.body.message).toEqual('Unauthorized')
+      done();
+    });
+  })
+
+  it('Should throw error if user does not exist', (done) => {
+    request(app)
+    .post('/api/v1/user/login')
+    .send({
+      email: 'moolefjonahV@gmail.com',
+      password: 'mood',
+    })
+    .expect(400, (err, res) => {
+      expect(res.body.status).toEqual(400);
+      expect(res.body.message).toEqual('Bad Request')
+      done();
+    });
+  })
 });

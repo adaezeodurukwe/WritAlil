@@ -1,10 +1,10 @@
-import dotenv from 'dotenv';
-import cryptoRandomString from 'crypto-random-string';
-import { userService } from '../services/userService';
-import { verificationService } from '../services/verifyService';
-import Helpers from '../utils/helpers';
-import verifyEmailMarkup from '../utils/markups/verifyEmail';
-import models from '../database/models';
+import dotenv from "dotenv";
+import cryptoRandomString from "crypto-random-string";
+import { userService } from "../services/userService";
+import { verificationService } from "../services/verifyService";
+import Helpers from "../utils/helpers";
+import verifyEmailMarkup from "../utils/markups/verifyEmail";
+import models from "../database/models";
 
 const { VerificationToken } = models;
 
@@ -12,7 +12,6 @@ dotenv.config();
 
 const website = process.env.WEBSITE;
 const host = process.env.HOST;
-
 
 /**
  * @class UserController
@@ -36,25 +35,33 @@ export default class UserController {
       delete user.dataValues.password;
 
       const { id, email, userName } = user;
-      const verificationToken = cryptoRandomString({ length: 15, type: 'base64' });
-      const { token } = await verificationService.create({ userId: id, token: verificationToken });
+      const verificationToken = cryptoRandomString({
+        length: 15,
+        type: "base64"
+      });
+      const { token } = await verificationService.create({
+        userId: id,
+        token: verificationToken
+      });
       const signed = Helpers.generateToken({ email, token });
 
-      Helpers.sendMail(email,
+      Helpers.sendMail(
+        email,
         website,
-        'Email Verification',
-        'Verify Email',
-        verifyEmailMarkup(userName, signed, host));
+        "Email Verification",
+        "Verify Email",
+        verifyEmailMarkup(userName, signed, host)
+      );
 
       return res.status(200).send({
         status: 200,
-        message: 'user created sucessfully',
+        message: "user created sucessfully",
         user
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: 'something went wrong',
+        message: "something went wrong",
         error
       });
     }
@@ -71,28 +78,30 @@ export default class UserController {
       const verificationToken = req.query.token;
       const decoded = Helpers.verifyToken(verificationToken);
       const { email, token } = decoded;
-      const include = [{
-        model: VerificationToken,
-        as: 'verificationtoken'
-      }];
+      const include = [
+        {
+          model: VerificationToken,
+          as: "verificationtoken"
+        }
+      ];
       const user = await userService.find({ email }, include);
       const userToken = user.verificationtoken.token;
 
       if (userToken !== token) {
         return res.status(403).send({
           status: 403,
-          message: 'forbidden',
+          message: "forbidden"
         });
       }
       await userService.updateRecord({ verified: true }, { id: user.id });
       return res.status(200).send({
         status: 200,
-        message: 'user verified, log in if you wish',
+        message: "user verified, log in if you wish"
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: 'something went wrong',
+        message: "something went wrong",
         error
       });
     }
@@ -105,34 +114,26 @@ export default class UserController {
    * @returns {object} login details
    */
   static async loginUser(req, res) {
-    try {
-      const { user } = req;
-      const { id } = user.dataValues;
-      const { email, password } = req.body;
-      const correctCredentials = Helpers.comparePassword(password, user.password);
+    const { user } = req;
+    const { id } = user.dataValues;
+    const { email, password } = req.body;
+    const correctCredentials = Helpers.comparePassword(password, user.password);
 
-      if (!correctCredentials) {
-        return res.status(403).send({
-          status: 403,
-          message: 'forbidden',
-        });
-      }
-
-      const token = Helpers.generateToken({ id, email });
-      delete user.dataValues.password;
-
-      return res.status(200).send({
-        status: 200,
-        message: 'login successfull',
-        token,
-        user
-      });
-    } catch (error) {
-      return res.status(500).send({
-        status: 500,
-        message: 'something went wrong',
-        error
+    if (!correctCredentials) {
+      return res.status(403).send({
+        status: 403,
+        message: "forbidden"
       });
     }
+
+    const token = Helpers.generateToken({ id, email });
+    delete user.dataValues.password;
+
+    return res.status(200).send({
+      status: 200,
+      message: "login successfull",
+      token,
+      user
+    });
   }
 }
