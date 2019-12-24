@@ -12,6 +12,10 @@ userRoutes.post('/user',
   validator.validateUserName,
   UserController.createUser);
 
+// Verify user
 userRoutes.get('/user/verification', UserController.verifyUser);
+
+// Login user
+userRoutes.post('/user/login', validator.validateEmailPassword, validator.confirmEmail, UserController.loginUser);
 
 export default userRoutes;
