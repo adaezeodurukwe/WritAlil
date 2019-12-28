@@ -1,10 +1,10 @@
-import dotenv from "dotenv";
-import cryptoRandomString from "crypto-random-string";
-import { userService } from "../services/userService";
-import { verificationService } from "../services/verifyService";
-import Helpers from "../utils/helpers";
-import verifyEmailMarkup from "../utils/markups/verifyEmail";
-import models from "../database/models";
+import dotenv from 'dotenv';
+import cryptoRandomString from 'crypto-random-string';
+import { userService } from '../services/userService';
+import { verificationService } from '../services/verifyService';
+import Helpers from '../utils/helpers';
+import verifyEmailMarkup from '../utils/markups/verifyEmail';
+import models from '../database/models';
 
 const { VerificationToken } = models;
 
@@ -37,7 +37,7 @@ export default class UserController {
       const { id, email, userName } = user;
       const verificationToken = cryptoRandomString({
         length: 15,
-        type: "base64"
+        type: 'base64'
       });
       const { token } = await verificationService.create({
         userId: id,
@@ -45,23 +45,21 @@ export default class UserController {
       });
       const signed = Helpers.generateToken({ email, token });
 
-      Helpers.sendMail(
-        email,
+      Helpers.sendMail(email,
         website,
-        "Email Verification",
-        "Verify Email",
-        verifyEmailMarkup(userName, signed, host)
-      );
+        'Email Verification',
+        'Verify Email',
+        verifyEmailMarkup(userName, signed, host));
 
       return res.status(200).send({
         status: 200,
-        message: "user created sucessfully",
+        message: 'user created sucessfully',
         user
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: "something went wrong",
+        message: 'something went wrong',
         error
       });
     }
@@ -81,7 +79,7 @@ export default class UserController {
       const include = [
         {
           model: VerificationToken,
-          as: "verificationtoken"
+          as: 'verificationtoken'
         }
       ];
       const user = await userService.find({ email }, include);
@@ -90,18 +88,18 @@ export default class UserController {
       if (userToken !== token) {
         return res.status(403).send({
           status: 403,
-          message: "forbidden"
+          message: 'forbidden'
         });
       }
-      await userService.updateRecord({ verified: true }, { id: user.id });
+      await userService.update({ verified: true }, { id: user.id });
       return res.status(200).send({
         status: 200,
-        message: "user verified, log in if you wish"
+        message: 'user verified, log in if you wish'
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: "something went wrong",
+        message: 'something went wrong',
         error
       });
     }
@@ -122,7 +120,7 @@ export default class UserController {
     if (!correctCredentials) {
       return res.status(403).send({
         status: 403,
-        message: "forbidden"
+        message: 'forbidden'
       });
     }
 
@@ -131,7 +129,7 @@ export default class UserController {
 
     return res.status(200).send({
       status: 200,
-      message: "login successfull",
+      message: 'login successfull',
       token,
       user
     });
