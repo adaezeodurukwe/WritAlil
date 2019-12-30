@@ -11,8 +11,8 @@ export default async (req, res, next) => {
     }
 
     const token = authorization.split(' ')[1];
-    const unsigned = Helpers.verifyToken(token);
-
+    const unsigned = await Helpers.verifyToken(token);
+    
     req.userId = unsigned.id;
 
     return next();

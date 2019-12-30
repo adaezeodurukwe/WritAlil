@@ -90,23 +90,10 @@ const validateUserName = async (req, res, next) => {
   return next();
 };
 
-const validationHandler = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      status: 400,
-      message: 'Bad request',
-      errors: errors.array()
-    });
-  }
-  return next();
-};
-
 export {
   createUser,
   confirmEmail,
   validateEmail,
   validateUserName,
-  validationHandler,
   validateEmailPassword
 };

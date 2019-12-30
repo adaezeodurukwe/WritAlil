@@ -13,16 +13,6 @@ const res = {
 const next = jest.fn();
 
 describe('User authentication', () => {
-  it('Should return next', () => {
-    const req = {
-      headers: {
-        authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYWl6eW9kdXJ1a3dlQGdtYWlsLmNvbSIsImlhdCI6MTU3NzQ4NTA4Mn0.hc9haq5dA-DymJSjwkMNb5qmDwHNVP5KrAyJGpm3ugU'
-      }
-    };
-    Authenticate(req, res, next);
-    expect(next).toHaveBeenCalled();
-  });
-
   it('Should return unauthorized when no token is present', async () => {
     const req = {
       headers: {

@@ -43,9 +43,9 @@ const UpdateArticle = [
   ...commonOptional
 ];
 
-const confirmArticle = (req, res, next) => {
+const confirmArticle = async (req, res, next) => {
   const { id } = req.params;
-  const article = articleService.find({ id });
+  const article = await articleService.find({ id });
   if (!article) {
     return res.status(400).json({
       status: 400,
