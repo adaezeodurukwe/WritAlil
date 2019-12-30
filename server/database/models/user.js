@@ -39,12 +39,17 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   User.associate = (models) => {
-    const { VerificationToken } = models;
+    const { VerificationToken, Article } = models;
     // associations can be defined here
     User.hasOne(VerificationToken, {
       as: 'verificationtoken',
       foreignKey: 'userId',
       foreignKeyConstraint: true
+    });
+
+    User.hasMany(Article, {
+      as: 'articles',
+      foreignKey: 'userId',
     });
   };
   return User;

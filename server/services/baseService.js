@@ -41,8 +41,17 @@ export default class BaseService {
    * @param {*} whereObject
    * @returns {object} updated row
    */
-  async updateRecord(updateObject, whereObject) {
+  async update(updateObject, whereObject) {
     const updated = await this.model.update(updateObject, { returning: true, where: whereObject });
     return updated;
+  }
+
+  /**
+   * @method delete
+   * @param {object} whereObject
+   * @returns {null} null
+   */
+  async delete(whereObject) {
+    await this.model.destroy({ where: whereObject });
   }
 }

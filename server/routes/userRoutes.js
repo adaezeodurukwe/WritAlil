@@ -1,21 +1,25 @@
 import express from 'express';
 import UserController from '../controllers/userController';
-import * as validator from '../middleware/validateUser';
+import { validateUser, validationHandler } from '../middleware';
+
 
 const userRoutes = express.Router();
 
 // Create user
 userRoutes.post('/user',
-  validator.createUser,
-  validator.validationHandler,
-  validator.validateEmail,
-  validator.validateUserName,
+  validateUser.createUser,
+  validationHandler,
+  validateUser.validateEmail,
+  validateUser.validateUserName,
   UserController.createUser);
 
 // Verify user
 userRoutes.get('/user/verification', UserController.verifyUser);
 
 // Login user
-userRoutes.post('/user/login', validator.validateEmailPassword, validator.confirmEmail, UserController.loginUser);
+userRoutes.post('/user/login',
+  validateUser.validateEmailPassword,
+  validateUser.confirmEmail,
+  UserController.loginUser);
 
 export default userRoutes;
