@@ -13,7 +13,7 @@ export default class ArticleController {
   static async createArticle(req, res) {
     try {
       const { userId, body } = req;
-      const slug = ArticleController.createArticleSlug(body.title);
+      const slug = await ArticleController.createArticleSlug(body.title);
       body.slug = slug;
       body.userId = userId;
       const article = await articleService.create(body);

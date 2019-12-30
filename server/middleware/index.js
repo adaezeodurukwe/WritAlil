@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator';
 import * as validateArticle from './validateArticle';
+import * as validateUser from './validateUser';
 import authenticate from './authenticate';
 
 const validationHandler = (req, res, next) => {
@@ -17,5 +18,6 @@ const validationHandler = (req, res, next) => {
 export {
   validationHandler,
   validateArticle,
+  validateUser,
   authenticate
 };
