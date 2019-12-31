@@ -19,7 +19,8 @@
     "test": "jest --coverage --detectOpenHandles --forceExit",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "db:refresh": "npm run db:reset && npm run db:migrate"
+    "db:refresh": "npm run db:reset && npm run db:migrate",
+    "db:seed": "node_modules/.bin/sequelize db:seed:all"
   },
   "husky": {
     "hooks": {

@@ -1,5 +1,8 @@
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 'use strict';
 
@@ -37,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
       type: DataTypes.BOOLEAN
     },
+    bioImage: {
+      type: DataTypes.STRING,
+      defaultValue: process.env.BIO_IMAGE
+    }
   }, {});
   User.associate = (models) => {
     const { VerificationToken, Article } = models;

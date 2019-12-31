@@ -14,6 +14,7 @@ export default async (req, res, next) => {
     const unsigned = await Helpers.verifyToken(token);
     
     req.userId = unsigned.id;
+    req.userName = unsigned.userName;
 
     return next();
   } catch (error) {

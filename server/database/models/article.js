@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     body: DataTypes.STRING,
     category: DataTypes.INTEGER,
-    coverImage: DataTypes.STRING,
+    coverImage: {
+      type: DataTypes.STRING,
+      defaultValue: process.env.COVER_IMAGE
+    },
     tags: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {});
   Article.associate = (models) => {

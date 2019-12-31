@@ -6,7 +6,7 @@ import Helpers from '../utils/helpers';
 import verifyEmailMarkup from '../utils/markups/verifyEmail';
 import models from '../database/models';
 
-const { VerificationToken } = models;
+const { VerificationToken, Article } = models;
 
 dotenv.config();
 
@@ -113,7 +113,7 @@ export default class UserController {
    */
   static async loginUser(req, res) {
     const { user } = req;
-    const { id } = user.dataValues;
+    const { id, userName } = user.dataValues;
     const { email, password } = req.body;
     const correctCredentials = Helpers.comparePassword(password, user.password);
 
@@ -124,7 +124,7 @@ export default class UserController {
       });
     }
 
-    const token = Helpers.generateToken({ id, email });
+    const token = Helpers.generateToken({ id, email, userName });
     delete user.dataValues.password;
 
     return res.status(200).send({
@@ -133,5 +133,58 @@ export default class UserController {
       token,
       user
     });
+  }
+
+  static async getProfile(req, res) {
+    try {
+      const { userName } = req.params.userName ? req.params : req;
+      const include = [{
+        model: Article,
+        as: 'articles'
+      }];
+      const user = await userService.find({ userName }, include)
+
+      if (!user) {
+        return res.status(401).send({
+          status: 401,
+          message: 'profile not found',
+          user
+        })
+      }
+      
+      delete user.dataValues.password;
+      delete user.dataValues.verified;
+
+      return res.status(200).send({
+        status: 200,
+        message: 'profile found',
+        user
+      });
+    } catch (error) {
+      return res.status(500).send({
+        status: 500,
+        message: 'something went wrong',
+        error
+      });
+    }
+  }
+
+  static async updateProfile(req, res) {
+    try {
+      const { userId, body } = req;
+      const { id } = req.params;
+      const user = await userService.update(body, { id, userId });
+      return res.status(200).send({
+        status: 200,
+        message: "profile updated successfully",
+        user: user[1]
+      });
+    } catch (error) {
+      return res.status(500).send({
+        status: 500,
+        message: "something went wrong",
+        error
+      });
+    }
   }
 }

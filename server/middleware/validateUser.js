@@ -24,9 +24,37 @@ const createUser = [
     .withMessage('Username must contain only alphabets')
     .isLength({ min: 3 })
     .withMessage('Username should be greater than three letters'),
+  
+  body('bioImage').optional()
+    .isURL()
+    .withMessage('bioImage must be a URL'),
 
   ...validateEmailPassword
 ];
+
+const updateUser = [
+  body('firstName').optional()
+    .isAlpha()
+    .withMessage('Firstname must contain only alphabets')
+    .isLength({ min: 2 })
+    .withMessage('Firstname should be greater than two letters'),
+
+  body('lastName').optional()
+    .isAlpha()
+    .withMessage('Lastname must contain only alphabets')
+    .isLength({ min: 2 })
+    .withMessage('Lastname should be greater than two letters'),
+
+  body('userName').optional()
+    .isAlphanumeric()
+    .withMessage('Username must contain only alphabets')
+    .isLength({ min: 3 })
+    .withMessage('Username should be greater than three letters'),
+
+  body('bioImage').optional()
+    .isURL()
+    .withMessage('bioImage must be a URL')
+]
 
 /**
  * @param {*} value
@@ -95,5 +123,6 @@ export {
   confirmEmail,
   validateEmail,
   validateUserName,
+  updateUser,
   validateEmailPassword
 };
