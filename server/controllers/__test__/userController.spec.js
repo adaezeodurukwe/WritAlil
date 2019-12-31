@@ -146,7 +146,7 @@ describe('User Login', () => {
       })
       .expect(200, (err, res) => {
         expect(res.body.status).toEqual(200);
-        expect(res.body.message).toEqual('login successfull');
+        expect(res.body.message).toEqual('login successful');
         done();
       });
   });
@@ -189,6 +189,67 @@ describe('User Login', () => {
       .expect(400, (err, res) => {
         expect(res.body.status).toEqual(400);
         expect(res.body.message).toEqual('Bad Request');
+        done();
+      });
+  });
+});
+
+describe('Get user profile', () => {
+  let userToken;
+  beforeEach((done) => {
+    request(app)
+      .post('/api/v1/user/login')
+      .send({
+        email: 'moolefjonah@gmail.com',
+        password: 'moody',
+      })
+      .expect(200, (err, res) => {
+        userToken = res.body.token;
+        done();
+      });
+  });
+  it('should get a user profile', (done) => {
+    request(app)
+      .get('/api/v1/user')
+      .set('authorization', `Bearer ${userToken}`)
+      .expect(200, (err, res) => {
+        expect(res.body.status).toEqual(200);
+        expect(res.body.message).toEqual('profile found');
+        done();
+      });
+  });
+
+  it('should get a user by userName', (done) => {
+    request(app)
+      .get('/api/v1/profile/jonahB')
+      .set('authorization', `Bearer ${userToken}`)
+      .expect(200, (err, res) => {
+        expect(res.body.status).toEqual(200);
+        expect(res.body.message).toEqual('profile found');
+        done();
+      });
+  });
+  it('should return error if userName does not exist', (done) => {
+    request(app)
+      .get('/api/v1/profile/jona')
+      .set('authorization', `Bearer ${userToken}`)
+      .expect(401, (err, res) => {
+        expect(res.body.status).toEqual(401);
+        expect(res.body.message).toEqual('profile not found');
+        done();
+      });
+  });
+
+  it('should update a user profile', (done) => {
+    request(app)
+      .put('/api/v1/user')
+      .set('authorization', `Bearer ${userToken}`)
+      .send({
+        firstName: 'church',
+      })
+      .expect(200, (err, res) => {
+        expect(res.body.status).toEqual(200);
+        expect(res.body.message).toEqual('profile updated successfully');
         done();
       });
   });

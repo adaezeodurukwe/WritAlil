@@ -129,7 +129,7 @@ export default class UserController {
 
     return res.status(200).send({
       status: 200,
-      message: 'login successfull',
+      message: 'login successful',
       token,
       user
     });
@@ -172,8 +172,7 @@ export default class UserController {
   static async updateProfile(req, res) {
     try {
       const { userId, body } = req;
-      const { id } = req.params;
-      const user = await userService.update(body, { id, userId });
+      const user = await userService.update(body, { id: userId });
       return res.status(200).send({
         status: 200,
         message: "profile updated successfully",

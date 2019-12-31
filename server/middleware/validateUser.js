@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, param } from 'express-validator';
 import { userService } from '../services/userService';
 
 const validateEmailPassword = [

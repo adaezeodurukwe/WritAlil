@@ -22,8 +22,11 @@ userRoutes.post('/user/login',
   validateUser.confirmEmail,
   UserController.loginUser);
 
-// Get profile
+// Get current user
 userRoutes.get('/user', authenticate, UserController.getProfile);
+
+// Get profile
+userRoutes.get('/profile/:userName', authenticate, UserController.getProfile);
 
 // Update profile
 userRoutes.put('/user',
