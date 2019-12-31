@@ -35,6 +35,14 @@ export default class BaseService {
     return found;
   }
 
+  async findAll(includeArray, limit, offset) {
+    return this.model.findAll({
+      offset,
+      limit,
+      include: includeArray
+    });
+  }
+
   /**
    * @method update
    * @param {*} updateObject

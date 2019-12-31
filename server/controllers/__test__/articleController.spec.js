@@ -8,6 +8,7 @@ import { articleService } from '../../services/articleService';
 describe('Article Controller', () => {
   let token = '';
   let articleId;
+  let articleSlug;
   beforeAll(async () => {
     const hashedPassword = Helpers.hashPassword('moody');
     await userService.create({
@@ -52,20 +53,44 @@ describe('Article Controller', () => {
     });
   })
 
+  describe('Get all articles', () => {
+    it('should get all articles', (done) => {
+      request(app)
+      .get('/api/v1/articles')
+      .expect(200, (err, res) => {
+        expect(res.body.status).toEqual(200);
+        expect(res.body.message).toEqual('here are your articles')
+        done();
+      });
+    })
+    it('should get articles with page and limit query', (done) => {
+      request(app)
+      .get('/api/v1/articles?limit=1&page=1')
+      .expect(200, (err, res) => {
+        expect(res.body.status).toEqual(200);
+        expect(res.body.message).toEqual('here are your articles')
+        expect(res.body.limit).toEqual("1")
+        expect(res.body.page).toEqual("1")
+        done();
+      });
+    })
+  });
+
   describe('Read, update article', () => {
     beforeEach(async () => {
-      const { id } = await articleService.create({
+      const { slug, id } = await articleService.create({
         title: 'blessed are thouzy',
         description: 'I said blessed you are',
         slug: 'blessed-are-thouzy',
         body: "i'd use lorem ispium for this but hey, here we are",
         category: 3,
       });
+      articleSlug = slug;
       articleId = id;
     });
-    it('should get an article by id', (done) => {
+    it('should get an article by slug', (done) => {
       request(app)
-        .get(`/api/v1/article/${articleId}`)
+        .get(`/api/v1/article/${articleSlug}`)
         .expect(200, (err, res) => {
           expect(res.body.status).toEqual(200);
           expect(res.body.message).toEqual('article found')

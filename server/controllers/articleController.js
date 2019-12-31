@@ -1,4 +1,7 @@
-import { articleService } from '../services/articleService';
+import { articleService } from "../services/articleService";
+import models from "../database/models";
+
+const { User } = models;
 
 /**
  * @class ArticleController
@@ -24,13 +27,13 @@ export default class ArticleController {
 
       return res.status(201).send({
         status: 201,
-        message: 'article created successfully',
+        message: "article created successfully",
         article
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: 'something went wrong',
+        message: "something went wrong",
         error
       });
     }
@@ -43,7 +46,7 @@ export default class ArticleController {
    */
   static async createArticleSlug(title) {
     const titleToLowerCase = title.toLowerCase();
-    const slug = titleToLowerCase.split(' ').join('-');
+    const slug = titleToLowerCase.split(" ").join("-");
     return slug;
   }
 
@@ -55,25 +58,60 @@ export default class ArticleController {
    */
   static async getArticle(req, res) {
     try {
-      const { id } = req.params;
-      const article = await articleService.find({ id });
+      const { slug } = req.params;
+      const article = await articleService.find({ slug });
 
       if (!article) {
         return res.status(404).send({
           status: 404,
-          message: 'article not found',
+          message: "article not found"
         });
       }
 
       return res.status(200).send({
         status: 200,
-        message: 'article found',
+        message: "article found",
         article
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: 'something went wrong',
+        message: "something went wrong",
+        error
+      });
+    }
+  }
+
+  static async getAllArticles(req, res) {
+    try {
+      const { page, limit } = req.query;
+      let additionalData = {};
+      const include = [
+        {
+          model: User,
+          attributes: ["firstName", "lastName", "userName"]
+        }
+      ];
+      let articles;
+
+      if (!(page && limit)) {
+        articles = await articleService.findAll(include);
+      } else {
+        const offset = limit * (page - 1);
+        articles = await articleService.findAll(include, limit, offset);
+        additionalData = { page, limit }
+      }
+
+      return res.status(200).send({
+        status: 200,
+        message: "here are your articles",
+        articles,
+        ...additionalData
+      });
+    } catch (error) {
+      return res.status(500).send({
+        status: 500,
+        message: "something went wrong",
         error
       });
     }
@@ -92,13 +130,13 @@ export default class ArticleController {
       const article = await articleService.update(body, { id, userId });
       return res.status(200).send({
         status: 200,
-        message: 'article updated successfully',
+        message: "article updated successfully",
         article: article[1]
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: 'something went wrong',
+        message: "something went wrong",
         error
       });
     }
@@ -119,12 +157,12 @@ export default class ArticleController {
 
       return res.status(200).send({
         status: 200,
-        message: 'article deleted successfully',
+        message: "article deleted successfully"
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: 'something went wrong',
+        message: "something went wrong",
         error
       });
     }

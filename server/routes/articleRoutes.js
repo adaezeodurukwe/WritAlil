@@ -12,7 +12,7 @@ articleRoutes.post('/article',
   ArticleController.createArticle);
 
 // Get article
-articleRoutes.get('/article/:id', ArticleController.getArticle);
+articleRoutes.get('/article/:slug', ArticleController.getArticle);
 
 // Update article
 articleRoutes.put('/article/:id',
@@ -27,5 +27,8 @@ articleRoutes.delete('/article/:id',
   authenticate,
   validateArticle.confirmArticle,
   ArticleController.deleteArticle);
+
+// Get all articles
+articleRoutes.get('/articles', ArticleController.getAllArticles);
 
 export default articleRoutes;
