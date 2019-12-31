@@ -30,6 +30,10 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING
     },
+    bioImage: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
     verified: {
       defaultValue: false,
       type: Sequelize.BOOLEAN

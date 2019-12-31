@@ -1,6 +1,6 @@
 import express from 'express';
 import UserController from '../controllers/userController';
-import { validateUser, validationHandler } from '../middleware';
+import { validateUser, validationHandler, authenticate } from '../middleware';
 
 
 const userRoutes = express.Router();
@@ -21,5 +21,18 @@ userRoutes.post('/user/login',
   validateUser.validateEmailPassword,
   validateUser.confirmEmail,
   UserController.loginUser);
+
+// Get current user
+userRoutes.get('/user', authenticate, UserController.getProfile);
+
+// Get profile
+userRoutes.get('/profile/:userName', authenticate, UserController.getProfile);
+
+// Update profile
+userRoutes.put('/user',
+  authenticate,
+  validateUser.updateUser,
+  validationHandler,
+  UserController.updateProfile)
 
 export default userRoutes;
