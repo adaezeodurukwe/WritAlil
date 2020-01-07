@@ -29,6 +29,11 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', routes);
 
+// Return 404 for nonexistent routes
+app.use((req, res) => {
+  res.status(404).send({ message: 'Route not found' });
+});
+
 const port = process.env.PORT;
 
 if (process.env.NODE_ENV !== 'test') app.listen(port);

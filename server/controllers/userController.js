@@ -6,7 +6,7 @@ import Helpers from '../utils/helpers';
 import verifyEmailMarkup from '../utils/markups/verifyEmail';
 import models from '../database/models';
 
-const { VerificationToken, Article } = models;
+const { VerificationToken, Article, Follow } = models;
 
 dotenv.config();
 
@@ -138,10 +138,21 @@ export default class UserController {
   static async getProfile(req, res) {
     try {
       const { userName } = req.params.userName ? req.params : req;
-      const include = [{
-        model: Article,
-        as: 'articles'
-      }];
+      const include = [
+        {all: true}
+        // {
+        //   model: Article,
+        //   as: 'articles',
+        // },
+        // {
+        //   model: Follow,
+        //   as: 'following',
+        // },
+        // {
+        //   model: Follow,
+        //   as: 'followers',
+        // },
+      ];
       const user = await userService.find({ userName }, include)
 
       if (!user) {
