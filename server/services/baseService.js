@@ -37,16 +37,31 @@ export default class BaseService {
 
   /**
    * @method findAll
-   * @param {*} includeArray models to include
-   * @param {*} limit result limit
-   * @param {*} offset skip over
+   * @param {array} includeArray models to include
+   * @param {number} limit result limit
+   * @param {number} offset skip over
+   * @param {object} whereObject
    * @returns {object} found object
    */
-  async findAll(includeArray, limit, offset) {
+  async findAll(includeArray, limit, offset, whereObject) {
     return this.model.findAll({
+      where: whereObject,
       offset,
       limit,
       include: includeArray
+    });
+  }
+
+  /**
+   * @description finds or creates an entry
+   * @param {object} whereObject
+   * @param {obgect} defaultsObject needed tor a create case
+   * @returns {array} containing entry and boolean that indicates if a new entry was created
+   */
+  async findOrCreate(whereObject, defaultsObject) {
+    return this.model.findOrCreate({
+      where: whereObject,
+      defaults: defaultsObject
     });
   }
 

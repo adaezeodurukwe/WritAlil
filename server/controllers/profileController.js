@@ -3,7 +3,6 @@ import models from '../database/models';
 
 const { User } = models;
 
-
 /**
  * @class ProfileController
  */
@@ -18,13 +17,19 @@ export default class ProfileController {
     try {
       const { userId, params } = req;
       const { id } = params;
-
-      const followed = await followService.create({
+      const dataObject = {
         userId: id,
         followerId: userId
-      });
+      };
+      const [followed, isNewEntry] = await followService.findOrCreate(dataObject, dataObject);
+      if (!isNewEntry) {
+        return res.status(400).send({
+          status: 400,
+          message: 'you already follow this user',
+        });
+      }
 
-      res.status(201).send({
+      return res.status(201).send({
         status: 201,
         message: 'follow successful',
         followed
@@ -54,7 +59,7 @@ export default class ProfileController {
         followerId: userId
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         status: 200,
         message: 'un-follow successful',
       });
@@ -75,15 +80,17 @@ export default class ProfileController {
    */
   static async getFollowers(req, res) {
     try {
+      let followers = [];
       const { userId } = req;
       const include = [{
         model: User,
         as: 'followers',
       }];
-      console.log('here', userId);
 
-      const followers = await followService.find({ followerId: userId }, include);
-
+      const users = await followService.findAll(include, null, null, { followerId: userId });
+      if (users[0]) {
+        followers = users.map((user) => user.followers);
+      }
       res.status(200).send({
         status: 200,
         message: 'followers found',
@@ -106,14 +113,18 @@ export default class ProfileController {
    */
   static async getFollowing(req, res) {
     try {
+      let following = [];
       const { userId } = req;
-      // const include = [{
-      //   model: User,
-      //   as: 'following',
-      // }];
-      console.log({ userId });
+      const include = [{
+        model: User,
+        as: 'following',
+      }];
 
-      const following = await followService.find({ userId });
+      const users = await followService.findAll(include, null, null, { userId });
+
+      if (users[0]) {
+        following = users.map((user) => user.following);
+      }
 
       res.status(200).send({
         status: 200,

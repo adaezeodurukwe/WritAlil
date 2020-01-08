@@ -36,10 +36,10 @@ userRoutes.put('/user',
   UserController.updateProfile);
 
 // Follow user
-userRoutes.post('/follow/:id', authenticate, ProfileController.follow);
+userRoutes.post('/follow/:id', authenticate, validateUser.validateFollow, ProfileController.follow);
 
 // Unfollow user
-userRoutes.delete('/unfollow/:id', authenticate, ProfileController.unFollow);
+userRoutes.delete('/unfollow/:id', authenticate, validateUser.validateFollow, ProfileController.unFollow);
 
 // Get user followers
 userRoutes.get('/followers', authenticate, ProfileController.getFollowers);

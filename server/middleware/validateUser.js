@@ -105,6 +105,20 @@ const validateEmail = async (req, res, next) => {
   return next();
 };
 
+const validateFollow = (req, res, next) => {
+  const { userId, params } = req;
+  const { id } = params;
+
+  if (parseInt(userId, 10) === parseInt(id, 10)) {
+    return res.status(400).send({
+      status: 400,
+      message: 'can\'t follow or unfollow yourself',
+    });
+  }
+  console.log('going next')
+  return next();
+};
+
 const validateUserName = async (req, res, next) => {
   const { userName } = req.body;
   const existingUser = await userService.find({ userName });
@@ -124,5 +138,6 @@ export {
   validateEmail,
   validateUserName,
   updateUser,
+  validateFollow,
   validateEmailPassword
 };

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable strict */
-/* eslint-disable no-unused-vars */
+
 import dotenv from 'dotenv';
 
 dotenv.config();

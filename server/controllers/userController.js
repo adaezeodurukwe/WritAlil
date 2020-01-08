@@ -6,8 +6,7 @@ import Helpers from '../utils/helpers';
 import verifyEmailMarkup from '../utils/markups/verifyEmail';
 import models from '../database/models';
 
-// eslint-disable-next-line no-unused-vars
-const { VerificationToken, Article, Follow } = models;
+const { VerificationToken } = models;
 
 dotenv.config();
 
@@ -29,10 +28,10 @@ export default class UserController {
     try {
       const { body } = req;
       const hashedPassword = Helpers.hashPassword(body.password);
-
       body.password = hashedPassword;
-
+      delete body.verified;
       const user = await userService.create(body);
+
       delete user.dataValues.password;
 
       const { id, email, userName } = user;
@@ -147,18 +146,6 @@ export default class UserController {
       const { userName } = req.params.userName ? req.params : req;
       const include = [
         { all: true }
-        // {
-        //   model: Article,
-        //   as: 'articles',
-        // },
-        // {
-        //   model: Follow,
-        //   as: 'following',
-        // },
-        // {
-        //   model: Follow,
-        //   as: 'followers',
-        // },
       ];
       const user = await userService.find({ userName }, include);
 

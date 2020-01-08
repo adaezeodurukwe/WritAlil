@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     followerId: DataTypes.INTEGER
   }, {});
-  Follow.associate = function (models) {
+  Follow.associate = (models) => {
     const { User } = models;
     // associations can be defined here
 

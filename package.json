@@ -16,7 +16,7 @@
     "start:dev": "nodemon --exec babel-node ./server/app.js",
     "lint": "eslint ./server --fix",
     "pretest": "npm run db:refresh ",
-    "test": "jest --coverage --detectOpenHandles --forceExit",
+    "test": "jest --silent --coverage --detectOpenHandles --forceExit",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
     "db:refresh": "npm run db:reset && npm run db:migrate",
