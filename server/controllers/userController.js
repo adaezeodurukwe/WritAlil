@@ -6,6 +6,7 @@ import Helpers from '../utils/helpers';
 import verifyEmailMarkup from '../utils/markups/verifyEmail';
 import models from '../database/models';
 
+// eslint-disable-next-line no-unused-vars
 const { VerificationToken, Article, Follow } = models;
 
 dotenv.config();
@@ -135,11 +136,17 @@ export default class UserController {
     });
   }
 
+  /**
+   * @method getProfile
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} profile
+   */
   static async getProfile(req, res) {
     try {
       const { userName } = req.params.userName ? req.params : req;
       const include = [
-        {all: true}
+        { all: true }
         // {
         //   model: Article,
         //   as: 'articles',
@@ -153,16 +160,16 @@ export default class UserController {
         //   as: 'followers',
         // },
       ];
-      const user = await userService.find({ userName }, include)
+      const user = await userService.find({ userName }, include);
 
       if (!user) {
         return res.status(401).send({
           status: 401,
           message: 'profile not found',
           user
-        })
+        });
       }
-      
+
       delete user.dataValues.password;
       delete user.dataValues.verified;
 
@@ -180,19 +187,25 @@ export default class UserController {
     }
   }
 
+  /**
+   * @method updateProfile
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} updated profile
+   */
   static async updateProfile(req, res) {
     try {
       const { userId, body } = req;
       const user = await userService.update(body, { id: userId });
       return res.status(200).send({
         status: 200,
-        message: "profile updated successfully",
+        message: 'profile updated successfully',
         user: user[1]
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: "something went wrong",
+        message: 'something went wrong',
         error
       });
     }

@@ -7,9 +7,7 @@ const mockResponse = () => {
   res.send = jest.fn().mockReturnValue(res);
   return res;
 };
-const res = {
-  status: 401
-};
+
 const next = jest.fn();
 
 describe('User authentication', () => {

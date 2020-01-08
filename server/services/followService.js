@@ -4,7 +4,7 @@ import BaseService from './baseService';
 const { Follow } = models;
 
 /**
- * @class UserService
+ * @class FollowService
  */
 export default class FollowService extends BaseService {
   /**

@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+import { body } from 'express-validator';
 import { userService } from '../services/userService';
 
 const validateEmailPassword = [
@@ -24,7 +24,7 @@ const createUser = [
     .withMessage('Username must contain only alphabets')
     .isLength({ min: 3 })
     .withMessage('Username should be greater than three letters'),
-  
+
   body('bioImage').optional()
     .isURL()
     .withMessage('bioImage must be a URL'),
@@ -54,7 +54,7 @@ const updateUser = [
   body('bioImage').optional()
     .isURL()
     .withMessage('bioImage must be a URL')
-]
+];
 
 /**
  * @param {*} value
