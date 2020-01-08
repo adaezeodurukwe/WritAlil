@@ -12,7 +12,7 @@ export default async (req, res, next) => {
 
     const token = authorization.split(' ')[1];
     const unsigned = await Helpers.verifyToken(token);
-    
+
     req.userId = unsigned.id;
     req.userName = unsigned.userName;
 

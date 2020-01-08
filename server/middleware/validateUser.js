@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+import { body } from 'express-validator';
 import { userService } from '../services/userService';
 
 const validateEmailPassword = [
@@ -24,7 +24,7 @@ const createUser = [
     .withMessage('Username must contain only alphabets')
     .isLength({ min: 3 })
     .withMessage('Username should be greater than three letters'),
-  
+
   body('bioImage').optional()
     .isURL()
     .withMessage('bioImage must be a URL'),
@@ -54,7 +54,7 @@ const updateUser = [
   body('bioImage').optional()
     .isURL()
     .withMessage('bioImage must be a URL')
-]
+];
 
 /**
  * @param {*} value
@@ -105,6 +105,20 @@ const validateEmail = async (req, res, next) => {
   return next();
 };
 
+const validateFollow = (req, res, next) => {
+  const { userId, params } = req;
+  const { id } = params;
+
+  if (parseInt(userId, 10) === parseInt(id, 10)) {
+    return res.status(400).send({
+      status: 400,
+      message: 'can\'t follow or unfollow yourself',
+    });
+  }
+  console.log('going next')
+  return next();
+};
+
 const validateUserName = async (req, res, next) => {
   const { userName } = req.body;
   const existingUser = await userService.find({ userName });
@@ -124,5 +138,6 @@ export {
   validateEmail,
   validateUserName,
   updateUser,
+  validateFollow,
   validateEmailPassword
 };

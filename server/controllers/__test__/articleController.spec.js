@@ -51,29 +51,29 @@ describe('Article Controller', () => {
           done();
         });
     });
-  })
+  });
 
   describe('Get all articles', () => {
     it('should get all articles', (done) => {
       request(app)
-      .get('/api/v1/articles')
-      .expect(200, (err, res) => {
-        expect(res.body.status).toEqual(200);
-        expect(res.body.message).toEqual('here are your articles')
-        done();
-      });
-    })
+        .get('/api/v1/articles')
+        .expect(200, (err, res) => {
+          expect(res.body.status).toEqual(200);
+          expect(res.body.message).toEqual('here are your articles');
+          done();
+        });
+    });
     it('should get articles with page and limit query', (done) => {
       request(app)
-      .get('/api/v1/articles?limit=1&page=1')
-      .expect(200, (err, res) => {
-        expect(res.body.status).toEqual(200);
-        expect(res.body.message).toEqual('here are your articles')
-        expect(res.body.limit).toEqual("1")
-        expect(res.body.page).toEqual("1")
-        done();
-      });
-    })
+        .get('/api/v1/articles?limit=1&page=1')
+        .expect(200, (err, res) => {
+          expect(res.body.status).toEqual(200);
+          expect(res.body.message).toEqual('here are your articles');
+          expect(res.body.limit).toEqual('1');
+          expect(res.body.page).toEqual('1');
+          done();
+        });
+    });
   });
 
   describe('Read, update article', () => {
@@ -93,7 +93,7 @@ describe('Article Controller', () => {
         .get(`/api/v1/article/${articleSlug}`)
         .expect(200, (err, res) => {
           expect(res.body.status).toEqual(200);
-          expect(res.body.message).toEqual('article found')
+          expect(res.body.message).toEqual('article found');
           done();
         });
     });
@@ -109,10 +109,10 @@ describe('Article Controller', () => {
         })
         .expect(200, (err, res) => {
           expect(res.body.status).toEqual(200);
-          expect(res.body.message).toEqual('article updated successfully')
+          expect(res.body.message).toEqual('article updated successfully');
           done();
         });
-    })
+    });
   });
 
   describe('delete article', () => {
@@ -132,7 +132,7 @@ describe('Article Controller', () => {
         .set('authorization', `Bearer ${token}`)
         .expect(200, (err, res) => {
           expect(res.body.status).toEqual(200);
-          expect(res.body.message).toEqual('article deleted successfully')
+          expect(res.body.message).toEqual('article deleted successfully');
           done();
         });
     });

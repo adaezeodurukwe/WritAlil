@@ -6,7 +6,7 @@ import Helpers from '../utils/helpers';
 import verifyEmailMarkup from '../utils/markups/verifyEmail';
 import models from '../database/models';
 
-const { VerificationToken, Article } = models;
+const { VerificationToken } = models;
 
 dotenv.config();
 
@@ -28,10 +28,10 @@ export default class UserController {
     try {
       const { body } = req;
       const hashedPassword = Helpers.hashPassword(body.password);
-
       body.password = hashedPassword;
-
+      delete body.verified;
       const user = await userService.create(body);
+
       delete user.dataValues.password;
 
       const { id, email, userName } = user;
@@ -135,23 +135,28 @@ export default class UserController {
     });
   }
 
+  /**
+   * @method getProfile
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} profile
+   */
   static async getProfile(req, res) {
     try {
       const { userName } = req.params.userName ? req.params : req;
-      const include = [{
-        model: Article,
-        as: 'articles'
-      }];
-      const user = await userService.find({ userName }, include)
+      const include = [
+        { all: true }
+      ];
+      const user = await userService.find({ userName }, include);
 
       if (!user) {
         return res.status(401).send({
           status: 401,
           message: 'profile not found',
           user
-        })
+        });
       }
-      
+
       delete user.dataValues.password;
       delete user.dataValues.verified;
 
@@ -169,19 +174,25 @@ export default class UserController {
     }
   }
 
+  /**
+   * @method updateProfile
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} updated profile
+   */
   static async updateProfile(req, res) {
     try {
       const { userId, body } = req;
       const user = await userService.update(body, { id: userId });
       return res.status(200).send({
         status: 200,
-        message: "profile updated successfully",
+        message: 'profile updated successfully',
         user: user[1]
       });
     } catch (error) {
       return res.status(500).send({
         status: 500,
-        message: "something went wrong",
+        message: 'something went wrong',
         error
       });
     }

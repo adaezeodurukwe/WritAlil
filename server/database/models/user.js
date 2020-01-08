@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable strict */
-/* eslint-disable no-unused-vars */
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -46,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   User.associate = (models) => {
-    const { VerificationToken, Article } = models;
+    const { VerificationToken, Article, Follow } = models;
     // associations can be defined here
     User.hasOne(VerificationToken, {
       as: 'verificationtoken',
@@ -57,6 +58,18 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(Article, {
       as: 'articles',
       foreignKey: 'userId',
+    });
+
+    User.belongsToMany(User, {
+      through: Follow,
+      foreignKey: 'userId',
+      as: 'following'
+    });
+
+    User.belongsToMany(User, {
+      through: Follow,
+      foreignKey: 'followerId',
+      as: 'followers'
     });
   };
   return User;
