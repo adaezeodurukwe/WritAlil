@@ -101,10 +101,10 @@ export default class ArticleController {
       let articles;
 
       if (!(page && limit)) {
-        articles = await articleService.findAll(include);
+        articles = await articleService.findAll(null, include);
       } else {
         const offset = limit * (page - 1);
-        articles = await articleService.findAll(include, limit, offset);
+        articles = await articleService.findAll(null, include, limit, offset);
         additionalData = { page, limit };
       }
 

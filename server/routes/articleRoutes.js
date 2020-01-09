@@ -31,4 +31,12 @@ articleRoutes.delete('/article/:id',
 // Get all articles
 articleRoutes.get('/articles', ArticleController.getAllArticles);
 
+// Create comment
+
+// Get comments
+
+// Update comment
+
+// Delete comment
+
 export default articleRoutes;

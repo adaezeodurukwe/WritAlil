@@ -37,13 +37,13 @@ export default class BaseService {
 
   /**
    * @method findAll
+   * @param {object} whereObject
    * @param {array} includeArray models to include
    * @param {number} limit result limit
    * @param {number} offset skip over
-   * @param {object} whereObject
    * @returns {object} found object
-   */
-  async findAll(includeArray, limit, offset, whereObject) {
+  */
+  async findAll(whereObject, includeArray, limit, offset) {
     return this.model.findAll({
       where: whereObject,
       offset,
