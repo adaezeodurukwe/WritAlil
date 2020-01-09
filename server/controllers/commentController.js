@@ -44,6 +44,7 @@ export default class CommentController {
   static async getAllArticleComments(req, res) {
     try {
       const { page, limit } = req.query;
+      const { articleId } = req.params;
       let additionalData = {};
       const include = [
         {
@@ -54,7 +55,7 @@ export default class CommentController {
       let comments;
 
       if (!(page && limit)) {
-        comments = await commentService.findAll(include);
+        comments = await commentService.findAll({ articleId }, include);
       } else {
         const offset = limit * (page - 1);
         comments = await commentService.findAll(include, limit, offset);

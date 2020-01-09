@@ -1,6 +1,7 @@
 import express from 'express';
 import ArticleController from '../controllers/articleController';
 import { validateArticle, validationHandler, authenticate } from '../middleware';
+import CommentController from '../controllers/commentController';
 
 const articleRoutes = express.Router();
 
@@ -32,11 +33,25 @@ articleRoutes.delete('/article/:id',
 articleRoutes.get('/articles', ArticleController.getAllArticles);
 
 // Create comment
+articleRoutes.post('/comment/:articleId',
+  validateArticle.confirmArticle,
+  validateArticle.createComment,
+  CommentController.createComment);
 
 // Get comments
+articleRoutes.get('/comment/:articleId',
+  validateArticle.confirmArticle,
+  CommentController.getAllArticleComments);
 
 // Update comment
+articleRoutes.put('/comment/:articleId/:id',
+  validateArticle.confirmArticle,
+  validateArticle.createComment,
+  CommentController.updateComment);
 
 // Delete comment
+articleRoutes.delete('/comment/:articleId/:id',
+  validateArticle.confirmArticle,
+  CommentController.deleteComment);
 
 export default articleRoutes;

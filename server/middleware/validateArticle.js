@@ -43,13 +43,19 @@ const UpdateArticle = [
   ...commonOptional
 ];
 
+const createComment = [
+  body('comment', 'comment is missing').exists()
+    .isLength({ min: 5 })
+    .withMessage('Comment should be more than five letters'),
+];
+
 const confirmArticle = async (req, res, next) => {
-  const { id } = req.params;
+  const id = req.params.id || req.params.articleId;
   const article = await articleService.find({ id });
   if (!article) {
     return res.status(400).json({
       status: 400,
-      message: 'Bad Request',
+      message: 'Article does not exist',
     });
   }
 
@@ -59,5 +65,6 @@ const confirmArticle = async (req, res, next) => {
 export {
   confirmArticle,
   createArticle,
+  createComment,
   UpdateArticle
 };
