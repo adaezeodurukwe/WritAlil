@@ -1,5 +1,6 @@
 import { body } from 'express-validator';
 import { articleService } from '../services/articleService';
+import { commentService } from '../services/commentService';
 
 const commonOptional = [
   body('description').optional()
@@ -62,8 +63,24 @@ const confirmArticle = async (req, res, next) => {
   next();
 };
 
+const confirmComment = async (req, res, next) => {
+  const { userId, params } = req;
+  const { id } = params;
+  const comment = await commentService.find({ id });
+  console.log(userId, comment.userId);
+  
+  if (!comment || (comment.userId !== userId)) {
+    return res.status(400).json({
+      status: 400,
+      message: 'comment does not exist',
+    });
+  }
+  next();
+};
+
 export {
   confirmArticle,
+  confirmComment,
   createArticle,
   createComment,
   UpdateArticle

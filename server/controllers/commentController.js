@@ -17,8 +17,9 @@ export default class CommentController {
     try {
       const { userId, body, params } = req;
       const { articleId } = params;
+      
       body.userId = userId;
-      body.articleId = articleId;
+      body.articleId = parseInt(articleId, 10) ;
       const comment = await commentService.create(body);
 
       return res.status(201).send({
