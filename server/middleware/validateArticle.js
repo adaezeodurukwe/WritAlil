@@ -67,8 +67,7 @@ const confirmComment = async (req, res, next) => {
   const { userId, params } = req;
   const { id } = params;
   const comment = await commentService.find({ id });
-  console.log(userId, comment.userId);
-  
+
   if (!comment || (comment.userId !== userId)) {
     return res.status(400).json({
       status: 400,

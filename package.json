@@ -15,7 +15,7 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build",
     "start:dev": "nodemon --exec babel-node ./server/app.js",
     "lint": "eslint ./server --fix",
-    "pretest": "npm run db:refresh ",
+    "pretest": "npm run db:refresh && npm run db:seed",
     "test": "jest --silent --coverage --detectOpenHandles --forceExit",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",

@@ -17,9 +17,9 @@ export default class CommentController {
     try {
       const { userId, body, params } = req;
       const { articleId } = params;
-      
+
       body.userId = userId;
-      body.articleId = parseInt(articleId, 10) ;
+      body.articleId = parseInt(articleId, 10);
       const comment = await commentService.create(body);
 
       return res.status(201).send({
@@ -59,7 +59,7 @@ export default class CommentController {
         comments = await commentService.findAll({ articleId }, include);
       } else {
         const offset = limit * (page - 1);
-        comments = await commentService.findAll(include, limit, offset);
+        comments = await commentService.findAll({ articleId }, include, limit, offset);
         additionalData = { page, limit };
       }
 
