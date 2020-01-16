@@ -87,7 +87,7 @@ export default class ProfileController {
         as: 'followers',
       }];
 
-      const users = await followService.findAll(include, null, null, { followerId: userId });
+      const users = await followService.findAll({ followerId: userId }, include);
       if (users[0]) {
         followers = users.map((user) => user.followers);
       }
@@ -120,7 +120,7 @@ export default class ProfileController {
         as: 'following',
       }];
 
-      const users = await followService.findAll(include, null, null, { userId });
+      const users = await followService.findAll({ userId }, include);
 
       if (users[0]) {
         following = users.map((user) => user.following);

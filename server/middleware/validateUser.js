@@ -115,7 +115,6 @@ const validateFollow = (req, res, next) => {
       message: 'can\'t follow or unfollow yourself',
     });
   }
-  console.log('going next')
   return next();
 };
 
