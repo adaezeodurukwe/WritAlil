@@ -1,6 +1,7 @@
 import { body } from 'express-validator';
 import { articleService } from '../services/articleService';
 import { commentService } from '../services/commentService';
+import { favoriteService } from '../services/favoriteService';
 
 const commonOptional = [
   body('description').optional()
@@ -59,7 +60,6 @@ const confirmArticle = async (req, res, next) => {
       message: 'Article does not exist',
     });
   }
-
   next();
 };
 
@@ -77,9 +77,24 @@ const confirmComment = async (req, res, next) => {
   next();
 };
 
+const confirmFavorite = async (req, res, next) => {
+  const { userId, params } = req;
+  const { articleId } = params;
+  const favorite = await favoriteService.find({ articleId });
+
+  if (!favorite || (favorite.userId !== userId)) {
+    return res.status(400).json({
+      status: 400,
+      message: 'favorite does not exist',
+    });
+  }
+  next();
+};
+
 export {
   confirmArticle,
   confirmComment,
+  confirmFavorite,
   createArticle,
   createComment,
   UpdateArticle
