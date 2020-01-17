@@ -4,9 +4,9 @@ import models from '../database/models';
 const { User } = models;
 
 /**
- * @class ProfileController
+ * @class FollowController
  */
-export default class ProfileController {
+export default class FollowController {
   /**
    * @method follow
    * @param {*} req

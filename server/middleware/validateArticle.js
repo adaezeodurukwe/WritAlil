@@ -78,9 +78,11 @@ const confirmComment = async (req, res, next) => {
 };
 
 const confirmFavorite = async (req, res, next) => {
+  console.log('here>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
   const { userId, params } = req;
   const { articleId } = params;
   const favorite = await favoriteService.find({ articleId });
+  console.log(favorite);
 
   if (!favorite || (favorite.userId !== userId)) {
     return res.status(400).json({

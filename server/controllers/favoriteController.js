@@ -18,11 +18,16 @@ export default class FavoriteController {
       const { userId, params } = req;
       const { articleId } = params;
 
-      await favoriteService.create({ userId, articleId });
-
+      const [, isNewEntry] = await favoriteService.findOrCreate({ userId, articleId });
+      if (!isNewEntry) {
+        return res.status(400).send({
+          status: 400,
+          message: 'article already added to favorites'
+        });
+      }
       return res.status(201).send({
         status: 201,
-        message: 'article added to favorites',
+        message: 'article added to favorites'
       });
     } catch (error) {
       return res.status(500).send({
@@ -41,30 +46,29 @@ export default class FavoriteController {
    */
   static async getAllUserFavorites(req, res) {
     try {
-      const { page, limit } = req.query;
+      let { page, limit } = req.query;
+      if (!(page && limit)) {
+        page = 1;
+        limit = 10;
+      }
       const { userId } = req;
-      let additionalData = {};
       const include = [
         {
           model: Article,
-          include: [{ model: User, attributes: ['firstName', 'lastName', 'userName'] }]
+          include: [
+            { model: User, attributes: ['firstName', 'lastName', 'userName'] }
+          ]
         }
       ];
-      let favorites;
-
-      if (!(page && limit)) {
-        favorites = await favoriteService.findAll({ userId }, include);
-      } else {
-        const offset = limit * (page - 1);
-        favorites = await favoriteService.findAll({ userId }, include, limit, offset);
-        additionalData = { page, limit };
-      }
+      const offset = limit * (page - 1);
+      const favorites = await favoriteService.findAll({ userId }, include, limit, offset);
 
       return res.status(200).send({
         status: 200,
         message: 'favorite articles',
         favorites,
-        ...additionalData
+        page,
+        limit
       });
     } catch (error) {
       return res.status(500).send({

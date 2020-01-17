@@ -67,7 +67,7 @@ articleRoutes.post('/favorite/:articleId',
   FavoriteController.createFavorite);
 
 // Get favorites
-articleRoutes.get('/favorite/',
+articleRoutes.get('/favorite',
   authenticate,
   FavoriteController.getAllUserFavorites);
 
