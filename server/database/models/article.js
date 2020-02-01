@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     category: DataTypes.INTEGER,
     coverImage: {
       type: DataTypes.STRING,
-      defaultValue: process.env.COVER_IMAGE
     },
     tags: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {});

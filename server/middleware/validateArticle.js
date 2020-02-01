@@ -52,8 +52,9 @@ const createComment = [
 ];
 
 const confirmArticle = async (req, res, next) => {
-  const id = req.params.id || req.params.articleId;
+  const id = req.params.id ? req.params.id : req.params.articleId;
   const article = await articleService.find({ id });
+
   if (!article) {
     return res.status(400).json({
       status: 400,
@@ -78,11 +79,9 @@ const confirmComment = async (req, res, next) => {
 };
 
 const confirmFavorite = async (req, res, next) => {
-  console.log('here>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
   const { userId, params } = req;
   const { articleId } = params;
   const favorite = await favoriteService.find({ articleId });
-  console.log(favorite);
 
   if (!favorite || (favorite.userId !== userId)) {
     return res.status(400).json({
