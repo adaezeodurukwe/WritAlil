@@ -2,6 +2,7 @@ import express from 'express';
 import ArticleController from '../controllers/articleController';
 import { validateArticle, validationHandler, authenticate } from '../middleware';
 import CommentController from '../controllers/commentController';
+import FavoriteController from '../controllers/favoriteController';
 
 const articleRoutes = express.Router();
 
@@ -58,5 +59,23 @@ articleRoutes.delete('/comment/:id',
   authenticate,
   validateArticle.confirmComment,
   CommentController.deleteComment);
+
+// Create favorite
+articleRoutes.post('/favorite/:articleId',
+  authenticate,
+  validateArticle.confirmArticle,
+  FavoriteController.createFavorite);
+
+// Get favorites
+articleRoutes.get('/favorite',
+  authenticate,
+  FavoriteController.getAllUserFavorites);
+
+
+// Delete favorite
+articleRoutes.delete('/favorite/:articleId',
+  authenticate,
+  validateArticle.confirmFavorite,
+  FavoriteController.deleteFavorite);
 
 export default articleRoutes;

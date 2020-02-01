@@ -1,6 +1,6 @@
 import express from 'express';
 import UserController from '../controllers/userController';
-import ProfileController from '../controllers/profileController';
+import FollowController from '../controllers/followController';
 import { validateUser, validationHandler, authenticate } from '../middleware';
 
 const userRoutes = express.Router();
@@ -36,15 +36,15 @@ userRoutes.put('/user',
   UserController.updateProfile);
 
 // Follow user
-userRoutes.post('/follow/:id', authenticate, validateUser.validateFollow, ProfileController.follow);
+userRoutes.post('/follow/:id', authenticate, validateUser.validateFollow, FollowController.follow);
 
 // Unfollow user
-userRoutes.delete('/unfollow/:id', authenticate, validateUser.validateFollow, ProfileController.unFollow);
+userRoutes.delete('/unfollow/:id', authenticate, validateUser.validateFollow, FollowController.unFollow);
 
 // Get user followers
-userRoutes.get('/followers', authenticate, ProfileController.getFollowers);
+userRoutes.get('/followers', authenticate, FollowController.getFollowers);
 
 // Get user following
-userRoutes.get('/following', authenticate, ProfileController.getFollowing);
+userRoutes.get('/following', authenticate, FollowController.getFollowing);
 
 export default userRoutes;
