@@ -12,10 +12,11 @@ jobs:
         environment:
           NODE_ENV: test
           DATABASE_URL: postgres://root@localhost/writalil_test_db
-      - image: postgres:9.6
+      - image: postgres:9.6 
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: writalil_test_db
+          POSTGRES_HOST_AUTH_METHOD: trust
     working_directory: ~/writalil-backend
     steps:
       - checkout

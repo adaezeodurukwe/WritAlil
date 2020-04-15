@@ -17,7 +17,9 @@ export default class ArticleController {
     try {
       const { userId, body } = req;
       const slug = await ArticleController.createArticleSlug(body.title);
+      const readTime = await ArticleController.readTime(body.body);
       body.slug = slug;
+      body.readTime = readTime;
       body.userId = userId;
       const article = await articleService.create(body);
       const newSlug = article.slug.concat(`-${article.id}`);
@@ -49,6 +51,27 @@ export default class ArticleController {
     const slug = titleToLowerCase.split(' ').join('-');
     return slug;
   }
+
+  /**
+   * @method createArticleSlug
+   * @param {string} articleBody
+   * @returns {string} readTime
+   */
+  static readTime(articleBody) {
+    let readTime = '';
+    const seconds = articleBody.split(' ').length * 0.24;
+
+    if (seconds === 60) {
+      readTime = '1 minute';
+    } else if (seconds < 60) {
+      readTime = '< 1 minute';
+    } else if (seconds > 60) {
+      const minutes = seconds / 60;
+      readTime = `${Math.round(minutes)} minutes`;
+    }
+    return readTime;
+  }
+
 
   /**
    * @method getArticle

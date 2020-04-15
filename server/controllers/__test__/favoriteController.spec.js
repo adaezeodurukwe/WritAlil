@@ -3,7 +3,7 @@ import app from '../../app';
 import { articleService } from '../../services/articleService';
 import { favoriteService } from '../../services/favoriteService';
 
-describe('Comments test', () => {
+describe('Favorites test', () => {
   let token = '';
   let articleId;
   let article1Id;
