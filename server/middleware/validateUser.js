@@ -2,58 +2,66 @@ import { body } from 'express-validator';
 import { userService } from '../services/userService';
 
 const validateEmailPassword = [
-  body('email', 'Email is missing').exists().isEmail().withMessage('Invalid email'),
-  body('password', 'Password is missing').exists().isLength({ min: 2 }).withMessage('Password must contain more than 4 characters')
+  body('email', 'Email is missing')
+    .exists()
+    .isEmail()
+    .withMessage('Invalid email'),
+  body('password', 'Password is missing')
+    .exists()
+    .isLength({ min: 2 })
+    .withMessage('Password must contain more than 4 characters'),
 ];
 
 const createUser = [
-  body('firstName', 'Firstname is missing').exists()
+  body('firstName', 'Firstname is missing')
+    .exists()
     .isAlpha()
     .withMessage('Firstname must contain only alphabets')
     .isLength({ min: 2 })
     .withMessage('Firstname should be greater than two letters'),
 
-  body('lastName', 'Lastname is missing').exists()
+  body('lastName', 'Lastname is missing')
+    .exists()
     .isAlpha()
     .withMessage('Lastname must contain only alphabets')
     .isLength({ min: 2 })
     .withMessage('Lastname should be greater than two letters'),
 
-  body('userName', 'Username is missing').exists()
+  body('userName', 'Username is missing')
+    .exists()
     .isAlphanumeric()
     .withMessage('Username must contain only alphabets')
     .isLength({ min: 3 })
     .withMessage('Username should be greater than three letters'),
 
-  body('bioImage').optional()
-    .isURL()
-    .withMessage('bioImage must be a URL'),
+  body('bioImage').optional().isURL().withMessage('bioImage must be a URL'),
 
-  ...validateEmailPassword
+  ...validateEmailPassword,
 ];
 
 const updateUser = [
-  body('firstName').optional()
+  body('firstName')
+    .optional()
     .isAlpha()
     .withMessage('Firstname must contain only alphabets')
     .isLength({ min: 2 })
     .withMessage('Firstname should be greater than two letters'),
 
-  body('lastName').optional()
+  body('lastName')
+    .optional()
     .isAlpha()
     .withMessage('Lastname must contain only alphabets')
     .isLength({ min: 2 })
     .withMessage('Lastname should be greater than two letters'),
 
-  body('userName').optional()
+  body('userName')
+    .optional()
     .isAlphanumeric()
     .withMessage('Username must contain only alphabets')
     .isLength({ min: 3 })
     .withMessage('Username should be greater than three letters'),
 
-  body('bioImage').optional()
-    .isURL()
-    .withMessage('bioImage must be a URL')
+  body('bioImage').optional().isURL().withMessage('bioImage must be a URL'),
 ];
 
 /**
@@ -71,36 +79,56 @@ function customErrorObject(value, msg, param, location) {
 }
 
 const confirmEmail = async (req, res, next) => {
-  const { email } = req.body;
-  const user = await userService.find({ email });
-  if (!user) {
-    const error = new customErrorObject(email, 'User doesn\'t exist', 'email', 'body');
-    return res.status(400).json({
-      status: 400,
-      message: 'Bad Request',
-      errors: [error] });
-  }
-  if (!user.verified) {
-    const error = new customErrorObject(email, 'Please verify your email, it\'s really easy', 'email', 'body');
-    return res.status(401).json({
-      status: 401,
-      message: 'Unauthorized',
-      errors: [error] });
-  }
+  try {
+    const { email } = req.body;
+    const user = await userService.find({ email });
+    if (!user) {
+      const error = new customErrorObject(email,
+        "User doesn't exist",
+        'email',
+        'body');
+      return res.status(400).json({
+        status: 400,
+        message: 'Bad Request',
+        errors: [error],
+      });
+    }
+    if (!user.verified) {
+      const error = new customErrorObject(email,
+        "Please verify your email, it's really easy",
+        'email',
+        'body');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized',
+        errors: [error],
+      });
+    }
 
-  req.user = user;
-  return next();
+    req.user = user;
+    return next();
+  } catch (error) {
+    return res.status(500).send({
+      status: 500,
+      message: 'something went wrong',
+      error
+    });
+  }
 };
 
 const validateEmail = async (req, res, next) => {
   const { email } = req.body;
   const existingUser = await userService.find({ email });
   if (existingUser) {
-    const error = new customErrorObject(email, 'User already exist', 'email', 'body');
+    const error = new customErrorObject(email,
+      'User already exist',
+      'email',
+      'body');
     return res.status(409).json({
       status: 409,
       message: 'Conflict',
-      errors: [error] });
+      errors: [error],
+    });
   }
   return next();
 };
@@ -112,7 +140,7 @@ const validateFollow = (req, res, next) => {
   if (parseInt(userId, 10) === parseInt(id, 10)) {
     return res.status(400).send({
       status: 400,
-      message: 'can\'t follow or unfollow yourself',
+      message: "can't follow or unfollow yourself",
     });
   }
   return next();
@@ -122,11 +150,15 @@ const validateUserName = async (req, res, next) => {
   const { userName } = req.body;
   const existingUser = await userService.find({ userName });
   if (existingUser) {
-    const error = new customErrorObject(userName, 'Username already exist', 'userName', 'body');
+    const error = new customErrorObject(userName,
+      'Username already exist',
+      'userName',
+      'body');
     return res.status(409).json({
       status: 409,
       message: 'Conflict',
-      errors: [error] });
+      errors: [error],
+    });
   }
   return next();
 };
@@ -138,5 +170,5 @@ export {
   validateUserName,
   updateUser,
   validateFollow,
-  validateEmailPassword
+  validateEmailPassword,
 };

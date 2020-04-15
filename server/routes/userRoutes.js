@@ -19,6 +19,7 @@ userRoutes.get('/user/verification', UserController.verifyUser);
 // Login user
 userRoutes.post('/user/login',
   validateUser.validateEmailPassword,
+  validationHandler,
   validateUser.confirmEmail,
   UserController.loginUser);
 

@@ -26,6 +26,9 @@ module.exports = {
     body: {
       type: Sequelize.STRING
     },
+    readTime: {
+      type: Sequelize.STRING
+    },
     category: {
       type: Sequelize.INTEGER
     },

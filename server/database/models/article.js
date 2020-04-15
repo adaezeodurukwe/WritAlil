@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     body: DataTypes.STRING,
+    readTime: DataTypes.STRING,
     category: DataTypes.INTEGER,
     coverImage: {
       type: DataTypes.STRING,
